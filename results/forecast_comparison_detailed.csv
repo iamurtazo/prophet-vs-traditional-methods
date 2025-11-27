@@ -1,0 +1,26 @@
+Commodity,Method,MAPE (%),RMSE,MAE,R²
+Corn,SMA_30,21.8,1.62,1.22,-0.6406
+Corn,EMA_30,21.87,1.63,1.23,-0.6585
+Corn,Linear_Trend,28.43,2.12,1.62,-1.7891
+Corn,Holt_Winters,98.84,6.29,5.25,-23.5977
+Corn,Prophet,21.1,1.46,1.14,-0.332
+Wheat,SMA_30,22.99,2.16,1.66,-1.4493
+Wheat,EMA_30,23.14,2.17,1.67,-1.4655
+Wheat,Linear_Trend,31.04,2.67,2.19,-2.7369
+Wheat,Holt_Winters,68.83,5.64,4.79,-15.6704
+Wheat,Prophet,16.66,1.76,1.24,-0.616
+Soybeans,SMA_30,23.02,4.06,3.13,-1.4017
+Soybeans,EMA_30,22.87,4.05,3.12,-1.3826
+Soybeans,Linear_Trend,22.8,4.09,3.12,-1.4354
+Soybeans,Holt_Winters,18.76,3.34,2.55,-0.6243
+Soybeans,Prophet,30.85,5.03,4.08,-2.6866
+Crude_Oil,SMA_30,33.05,20.12,15.87,-0.0281
+Crude_Oil,EMA_30,33.15,20.07,15.83,-0.0233
+Crude_Oil,Linear_Trend,34.62,25.32,19.53,-0.629
+Crude_Oil,Holt_Winters,51.45,25.12,21.77,-0.6029
+Crude_Oil,Prophet,36.58,19.42,15.29,0.0423
+SP500,SMA_30,20.85,1038.64,854.08,-1.6778
+SP500,EMA_30,20.76,1035.4,850.6,-1.6611
+SP500,Linear_Trend,16.23,795.14,659.86,-0.5694
+SP500,Holt_Winters,17.47,735.81,656.16,-0.3439
+SP500,Prophet,17.19,856.82,702.39,-0.8224
