@@ -5,10 +5,11 @@
 ---
 
 # Table of Contents
+
 1. [Introduction](#1-introduction)
 2. [Literature Review](#2-literature-review)
 3. [Methodology](#3-methodology)
-4. [Results & Discussion](#4-results--discussion)
+4. [Results &amp; Discussion](#4-results--discussion)
 5. [Conclusion](#5-conclusion)
 6. [References](#references)
 7. [Appendix: Excel Methodology](#appendix-excel-methodology)
@@ -26,11 +27,8 @@ In today's volatile global supply chain environment, accurate demand and price f
 This research aims to:
 
 1. **Quantify accuracy improvements**: Measure the difference in forecast accuracy between Prophet and traditional Excel methods (Moving Averages, Exponential Smoothing, Linear Trend Analysis) across multiple commodity datasets.
-
 2. **Demonstrate practical business value**: Translate technical improvements into tangible business outcomes including inventory cost savings, stockout reduction, and procurement optimization.
-
 3. **Evaluate cross-sector applicability**: Test Prophet's performance across diverse commodity types—agricultural (corn, wheat, soybeans), energy (crude oil), and financial (S&P 500)—to assess generalizability.
-
 4. **Provide implementation guidance**: Deliver actionable recommendations for supply chain managers considering Prophet adoption.
 
 ## 1.3 Research Questions
@@ -46,6 +44,7 @@ While Prophet has gained popularity in technology companies, its specific applic
 ## 1.5 Significance for Supply Chain Management
 
 Accurate forecasting directly impacts:
+
 - **Inventory optimization**: Better predictions reduce safety stock requirements and holding costs
 - **Procurement timing**: Price forecasts enable strategic purchasing decisions
 - **Risk management**: Uncertainty quantification (prediction intervals) supports risk-adjusted planning
@@ -78,15 +77,19 @@ Prophet, released by Facebook's Core Data Science team in 2017, represents a par
 
 Mathematically, Prophet decomposes time series as:
 
-$$y(t) = g(t) + s(t) + h(t) + \epsilon_t$$
+$$
+y(t) = g(t) + s(t) + h(t) + \epsilon_t
+$$
 
 Where:
+
 - g(t): Piecewise linear or logistic growth trend
 - s(t): Seasonal component (Fourier series)
 - h(t): Holiday/event effects
 - ε_t: Error term
 
 Prophet's key advantages include:
+
 1. **Minimal tuning required**: Reasonable defaults work well across diverse datasets
 2. **Interpretable components**: Clear separation of trend, seasonality, and events
 3. **Uncertainty quantification**: Built-in prediction intervals
@@ -101,6 +104,7 @@ Limited research exists comparing Prophet specifically to Excel methods in suppl
 - However, most studies focus on retail rather than commodity markets
 
 This research extends existing literature by:
+
 1. Focusing specifically on commodity price forecasting
 2. Comparing against Excel-implementable methods (not just statistical packages)
 3. Quantifying business impact beyond technical accuracy metrics
@@ -112,6 +116,7 @@ This research extends existing literature by:
 ## 3.1 Dataset Description
 
 ### Dataset 1: Brent Crude Oil Prices
+
 - **Source**: Historical commodity data
 - **Period**: January 2000 - November 2022 (22 years)
 - **Frequency**: Daily
@@ -119,6 +124,7 @@ This research extends existing literature by:
 - **Variables**: Date, Price (USD/barrel)
 
 ### Dataset 2: Multi-Commodity Prices
+
 - **Source**: Commodity market data
 - **Period**: April 2009 - December 2022 (13 years)
 - **Frequency**: Daily
@@ -132,13 +138,13 @@ This research extends existing literature by:
 
 **Table 1: Dataset Summary Statistics**
 
-| Commodity | Records | Date Range | Price Range | Mean Price | Std Dev |
-|-----------|---------|------------|-------------|------------|---------|
-| Brent Oil | 5,811 | 2000-2022 | $19.33-$143.95 | $68.50 | $28.15 |
-| Corn | 3,282 | 2009-2022 | $3.01-$8.24 | $4.85 | $1.23 |
-| Wheat | 3,282 | 2009-2022 | $3.95-$13.40 | $6.12 | $1.67 |
-| Soybeans | 3,282 | 2009-2022 | $8.08-$17.59 | $11.87 | $2.34 |
-| S&P 500 | 3,282 | 2009-2022 | $676-$4,796 | $2,234 | $987 |
+| Commodity | Records | Date Range | Price Range    | Mean Price                | Std Dev |
+| --------- | ------- | ---------- | -------------- | ------------------------- | ------- |
+| Brent Oil | 5,811   | 2000-2022  | $19.33-$143.95 | $68.50           | $28.15 | $68.50  |
+| Corn      | 3,282   | 2009-2022  | $3.01-$8.24    | $4.85  | $1.23          | $1.23   |
+| Wheat     | 3,282   | 2009-2022  | $3.95-$13.40   | $6.12 | $1.67             | $1.67   |
+| Soybeans  | 3,282   | 2009-2022  | $8.08-$17.59   | $11.87 | $2.34            | $2.34   |
+| S&P 500   | 3,282   | 2009-2022  | $676-$4,796    | $2,234 | $987             | $987    |
 
 ## 3.2 Data Preprocessing
 
@@ -154,6 +160,7 @@ This research extends existing literature by:
 **Excel Formula**: `=AVERAGE(B2:B31)` for 30-day window
 
 **Python Implementation**:
+
 ```python
 def simple_moving_average(data, window=30):
     return data.rolling(window=window).mean()
@@ -166,6 +173,7 @@ For forecasting, the last SMA value is extended forward (naive forecast assumpti
 **Excel Formula**: `=EMA_yesterday * (1-k) + Price_today * k` where `k = 2/(span+1)`
 
 **Python Implementation**:
+
 ```python
 def exponential_moving_average(data, span=30):
     return data.ewm(span=span, adjust=False).mean()
@@ -176,6 +184,7 @@ def exponential_moving_average(data, span=30):
 **Excel Formula**: `=TREND(known_y's, known_x's, new_x's)` or `=FORECAST(x, known_y's, known_x's)`
 
 **Python Implementation**:
+
 ```python
 def linear_trend_forecast(train_data, forecast_periods):
     x = np.arange(len(train_data))
@@ -189,6 +198,7 @@ def linear_trend_forecast(train_data, forecast_periods):
 **Excel Implementation**: Requires helper columns for Level and Trend components
 
 **Python Implementation**:
+
 ```python
 def holt_winters_simple(data, alpha=0.3, beta=0.1, forecast_periods=30):
     # Level: L_t = alpha * y_t + (1 - alpha) * (L_{t-1} + T_{t-1})
@@ -215,6 +225,7 @@ forecast = model.predict(future)
 ```
 
 **Key Prophet Parameters**:
+
 - `yearly_seasonality`: Captures annual patterns (harvest cycles, winter heating demand)
 - `weekly_seasonality`: Captures trading day effects
 - `changepoint_prior_scale`: Controls trend flexibility (higher = more responsive to changes)
@@ -224,25 +235,33 @@ forecast = model.predict(future)
 
 ### 3.5.1 Mean Absolute Percentage Error (MAPE)
 
-$$MAPE = \frac{1}{n} \sum_{i=1}^{n} \left| \frac{y_i - \hat{y}_i}{y_i} \right| \times 100$$
+$$
+MAPE = \frac{1}{n} \sum_{i=1}^{n} \left| \frac{y_i - \hat{y}_i}{y_i} \right| \times 100
+$$
 
 **Interpretation**: Average percentage deviation from actual values. Lower is better.
 
 ### 3.5.2 Root Mean Square Error (RMSE)
 
-$$RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$
+$$
+RMSE = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
+$$
 
 **Interpretation**: Standard deviation of prediction errors. Same units as target variable.
 
 ### 3.5.3 Mean Absolute Error (MAE)
 
-$$MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|$$
+$$
+MAE = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
+$$
 
 **Interpretation**: Average absolute deviation. Less sensitive to outliers than RMSE.
 
 ### 3.5.4 Coefficient of Determination (R²)
 
-$$R^2 = 1 - \frac{\sum(y_i - \hat{y}_i)^2}{\sum(y_i - \bar{y})^2}$$
+$$
+R^2 = 1 - \frac{\sum(y_i - \hat{y}_i)^2}{\sum(y_i - \bar{y})^2}
+$$
 
 **Interpretation**: Proportion of variance explained. Closer to 1 is better.
 
@@ -261,13 +280,13 @@ To validate that Prophet improvements are not due to random chance, we employed:
 
 ### Table 2: MAPE Comparison Across All Methods (%)
 
-| Commodity | SMA-30 | EMA-30 | Linear Trend | Holt-Winters | **Prophet** |
-|-----------|--------|--------|--------------|--------------|-------------|
-| Corn | 21.80 | 21.87 | 28.43 | 98.84 | **21.10** |
-| Wheat | 22.99 | 23.14 | 31.04 | 68.83 | **16.66** |
-| Soybeans | 23.02 | 22.87 | 22.80 | **18.76** | 30.85 |
-| Crude Oil | **33.05** | 33.15 | 34.62 | 51.45 | 36.58 |
-| S&P 500 | 20.85 | 20.76 | **16.23** | 17.47 | 17.19 |
+| Commodity | SMA-30          | EMA-30 | Linear Trend    | Holt-Winters    | **Prophet** |
+| --------- | --------------- | ------ | --------------- | --------------- | ----------------- |
+| Corn      | 21.80           | 21.87  | 28.43           | 98.84           | **21.10**   |
+| Wheat     | 22.99           | 23.14  | 31.04           | 68.83           | **16.66**   |
+| Soybeans  | 23.02           | 22.87  | 22.80           | **18.76** | 30.85             |
+| Crude Oil | **33.05** | 33.15  | 34.62           | 51.45           | 36.58             |
+| S&P 500   | 20.85           | 20.76  | **16.23** | 17.47           | 17.19             |
 
 *Note: Bold values indicate best performing method for each commodity.*
 
@@ -275,35 +294,40 @@ To validate that Prophet improvements are not due to random chance, we employed:
 
 ### Table 3: Prophet vs. Best Traditional Method
 
-| Commodity | Best Traditional MAPE | Prophet MAPE | Improvement |
-|-----------|----------------------|--------------|-------------|
-| Corn | 21.80% (SMA) | 21.10% | **+3.2%** |
-| Wheat | 22.99% (SMA) | 16.66% | **+27.5%** |
-| Soybeans | 18.76% (H-W) | 30.85% | -64.4% |
-| Crude Oil | 33.05% (SMA) | 36.58% | -10.7% |
-| S&P 500 | 16.23% (Linear) | 17.19% | -5.9% |
+| Commodity | Best Traditional MAPE | Prophet MAPE | Improvement      |
+| --------- | --------------------- | ------------ | ---------------- |
+| Corn      | 21.80% (SMA)          | 21.10%       | **+3.2%**  |
+| Wheat     | 22.99% (SMA)          | 16.66%       | **+27.5%** |
+| Soybeans  | 18.76% (H-W)          | 30.85%       | -64.4%           |
+| Crude Oil | 33.05% (SMA)          | 36.58%       | -10.7%           |
+| S&P 500   | 16.23% (Linear)       | 17.19%       | -5.9%            |
 
 **Notable Success**: Prophet excelled particularly on **Wheat** forecasting, achieving a 27.5% reduction in MAPE compared to traditional methods, demonstrating its strength for commodities with strong seasonal patterns.
 
 ## 4.2 Visual Analysis
 
 ### Figure 2: Brent Oil Forecast Comparison
+
 *[Insert figure: figures/02_brent_oil_comparison.png]*
 
 The visualization reveals several key insights:
+
 1. All forecasting methods struggle with the high volatility in the test period
 2. Moving averages provide stable but lagging forecasts
 3. Prophet's 95% confidence interval provides valuable uncertainty quantification not available in traditional Excel methods
 
 ### Figure 3: Multi-Commodity Prophet Forecasts
+
 *[Insert figure: figures/03_multi_commodity_prophet.png]*
 
 Prophet's performance varies by commodity type, with confidence intervals appropriately widening during volatile periods (e.g., 2020 COVID impact on oil prices). The visualizations highlight Prophet's strength in capturing seasonal patterns, particularly evident in wheat forecasting.
 
 ### Figure 5: Prophet Component Decomposition
+
 *[Insert figure: figures/05_prophet_components.png]*
 
 Prophet's automatic decomposition reveals:
+
 - **Trend**: Long-term price trajectory with identified changepoints
 - **Yearly seasonality**: Cyclical patterns (e.g., heating oil demand in winter)
 - **Weekly seasonality**: Trading day effects
@@ -314,13 +338,13 @@ This interpretability is a **major advantage** over black-box traditional method
 
 ### Table 4: Statistical Significance Test Results
 
-| Commodity | Prophet Better? | Notes |
-|-----------|----------------|-------|
-| Corn | ✅ Marginal | 3.2% improvement |
-| Wheat | ✅ Yes | 27.5% improvement - statistically significant |
-| Soybeans | ❌ No | Holt-Winters performed better |
-| Crude Oil | ❌ No | SMA performed better |
-| S&P 500 | ❌ No | Linear Trend performed better |
+| Commodity | Prophet Better? | Notes                                         |
+| --------- | --------------- | --------------------------------------------- |
+| Corn      | Marginal        | 3.2% improvement                              |
+| Wheat     | Yes             | 27.5% improvement - statistically significant |
+| Soybeans  | No              | Holt-Winters performed better                 |
+| Crude Oil | No              | SMA performed better                          |
+| S&P 500   | No              | Linear Trend performed better                 |
 
 **Conclusion**: Prophet demonstrated statistically significant improvement for **Wheat** (27.5%) and marginal improvement for **Corn** (3.2%). For other commodities, traditional methods performed better, indicating that Prophet's advantages are most pronounced for data with clear seasonal patterns.
 
@@ -337,16 +361,17 @@ Business impact was estimated using industry-standard supply chain cost models:
 ### 4.4.2 Quantified Impact
 
 **Scenario**: Medium-sized commodity trading company
+
 - Annual Revenue: $200 million
 - Annual Inventory Value: $50 million
 - Annual Commodity Purchases: $75 million
 
 ### Table 5: Estimated Annual Business Impact (Where Prophet Excels)
 
-| Commodity | MAPE Improvement | Inventory Savings | Stockout Prevention | **Total** |
-|-----------|------------------|-------------------|---------------------|-----------|
-| Wheat | 27.5% | $68,750 | $115,500 | **$184,250** |
-| Corn | 3.2% | $8,000 | $13,440 | **$21,440** |
+| Commodity | MAPE Improvement | Inventory Savings  | Stockout Prevention | **Total** |
+| --------- | ---------------- | ------------------ | ------------------- | --------------- |
+| Wheat     | 27.5%            | $68,750 | $115,500 | **$184,250**  |                 |
+| Corn      | 3.2%             | $8,000 | $13,440   | **$21,440**   |                 |
 
 *Note: Business impact calculated only for commodities where Prophet outperformed traditional methods.*
 
@@ -355,6 +380,7 @@ Business impact was estimated using industry-standard supply chain cost models:
 *Figures are illustrative based on standard industry assumptions. Actual impact varies by company size and operations.*
 
 ### Figure 4: Business Impact Visualization
+
 *[Insert figure: figures/04_business_impact.png]*
 
 ## 4.5 Discussion
@@ -364,9 +390,7 @@ Business impact was estimated using industry-standard supply chain cost models:
 Prophet demonstrated clear advantages for **Wheat** (27.5% improvement) and marginal gains for **Corn** (3.2%). Analysis suggests Prophet performs best when:
 
 1. **Strong seasonal patterns exist**: Wheat has clear agricultural seasonality that Prophet captures automatically
-
 2. **Data quality is high**: Clean, consistent time series allow Prophet's decomposition to work effectively
-
 3. **Trend changes are gradual**: Prophet's piecewise linear approach handles smooth transitions well
 
 ### 4.5.2 When Traditional Methods Perform Better
@@ -379,13 +403,13 @@ For **Soybeans**, **Crude Oil**, and **S&P 500**, traditional methods outperform
 
 ### 4.5.3 Unique Prophet Advantages (Regardless of Accuracy)
 
-| Aspect | Traditional (Excel) | Prophet |
-|--------|---------------------|---------|
-| Uncertainty quantification | Not provided | **95% confidence intervals** |
-| Seasonality detection | Manual | **Automatic** |
-| Component visualization | Not available | **Trend/Seasonality decomposition** |
-| Scalability | Manual per-product | **Batch processing** |
-| Cost | Included in Office | **Free (open-source)** |
+| Aspect                     | Traditional (Excel) | Prophet                                   |
+| -------------------------- | ------------------- | ----------------------------------------- |
+| Uncertainty quantification | Not provided        | **95% confidence intervals**        |
+| Seasonality detection      | Manual              | **Automatic**                       |
+| Component visualization    | Not available       | **Trend/Seasonality decomposition** |
+| Scalability                | Manual per-product  | **Batch processing**                |
+| Cost                       | Included in Office  | **Free (open-source)**              |
 
 Even when Prophet's point forecasts underperform, its **confidence intervals** provide valuable risk management information that Excel methods cannot offer.
 
@@ -405,23 +429,16 @@ Even when Prophet's point forecasts underperform, its **confidence intervals** p
 This study provides empirical evidence comparing Facebook Prophet against traditional Excel-based forecasting methods for supply chain commodity forecasting:
 
 1. **Mixed accuracy results**: Prophet outperformed traditional methods for **Wheat** (27.5% improvement) and **Corn** (3.2% improvement), but traditional methods performed better for **Soybeans**, **Crude Oil**, and **S&P 500**
-
 2. **Seasonal data advantage**: Prophet excels when strong seasonal patterns exist (agricultural commodities like wheat)
-
 3. **Unique capabilities**: Regardless of point forecast accuracy, Prophet provides valuable **uncertainty quantification** through 95% confidence intervals—a feature not available in traditional Excel methods
-
 4. **Practical trade-offs**: Prophet requires Python implementation but offers automatic seasonality detection and trend decomposition that would require significant manual effort in Excel
 
 ## 5.2 Recommendations for Supply Chain Practitioners
 
 1. **Selective adoption**: Use Prophet for commodities with clear seasonal patterns (e.g., agricultural products); consider simpler methods for highly volatile markets
-
 2. **Parallel testing**: Run Prophet alongside existing Excel methods to validate which approach works best for your specific data
-
 3. **Leverage confidence intervals**: Even when Prophet's point forecasts don't outperform, use its prediction intervals for risk-adjusted safety stock calculations
-
 4. **Hybrid approach**: Consider using Prophet for uncertainty quantification while using traditional methods for point forecasts where they perform better
-
 5. **Data-driven selection**: Test multiple methods and let the data determine the best approach for each commodity category
 
 ## 5.3 Limitations of This Study
@@ -444,13 +461,9 @@ This study provides empirical evidence comparing Facebook Prophet against tradit
 # References
 
 1. Hyndman, R.J., & Athanasopoulos, G. (2021). *Forecasting: Principles and Practice* (3rd ed.). OTexts.
-
 2. Taylor, S.J., & Letham, B. (2018). Forecasting at scale. *The American Statistician*, 72(1), 37-45.
-
 3. Winters, P.R. (1960). Forecasting sales by exponentially weighted moving averages. *Management Science*, 6(3), 324-342.
-
 4. Zunic, E., et al. (2020). Application of Facebook Prophet algorithm for demand forecasting. *Information Technology and Information Systems*, 35-40.
-
 5. Papastefanopoulos, V., Linardatos, P., & Kotsiantis, S. (2020). COVID-19: A comparison of time series methods to forecast percentage of active cases per population. *Applied Sciences*, 10(11), 3880.
 
 ---
@@ -462,16 +475,17 @@ This study provides empirical evidence comparing Facebook Prophet against tradit
 ### Step-by-Step Implementation
 
 1. **Data setup**: Place dates in Column A, prices in Column B
-
 2. **SMA formula** (30-day window):
+
    - In cell C31, enter: `=AVERAGE(B2:B31)`
    - Drag formula down for all subsequent rows
+3. **Forecast**:
 
-3. **Forecast**: 
    - Copy last SMA value for future periods
    - This assumes price will equal recent average (naive forecast)
 
 ### Excel Formula Reference
+
 ```
 Cell C31: =AVERAGE(B2:B31)
 Cell C32: =AVERAGE(B3:B32)
@@ -483,17 +497,18 @@ Cell C32: =AVERAGE(B3:B32)
 ### Step-by-Step Implementation
 
 1. **Calculate smoothing constant**:
+
    - k = 2 / (N + 1) where N = number of periods
    - For 30-day EMA: k = 2/31 = 0.0645
-
 2. **Initial EMA**: Set first EMA equal to first price or SMA
-
 3. **EMA formula**:
+
    - In cell D2: `=B2` (initial value)
    - In cell D3: `=B3*0.0645 + D2*(1-0.0645)`
    - Drag formula down
 
 ### Excel Formula Reference
+
 ```
 Cell E1: 0.0645  (smoothing constant)
 Cell D2: =B2
@@ -532,20 +547,21 @@ Example (forecast for row 101):
 ### Setup (Double Exponential Smoothing)
 
 1. **Parameters**:
+
    - Alpha (level smoothing): 0.3 (cell G1)
    - Beta (trend smoothing): 0.1 (cell G2)
-
 2. **Initialize** (row 2):
+
    - Level (E2): `=B2`
    - Trend (F2): `=B3-B2`
-
 3. **Formulas** (row 3 onwards):
+
    - Level: `=$G$1*B3 + (1-$G$1)*(E2+F2)`
    - Trend: `=$G$2*(E3-E2) + (1-$G$2)*F2`
-
 4. **Forecast**: `=Level + Periods_Ahead * Trend`
 
 ### Excel Formula Reference
+
 ```
 Parameters:
 G1: 0.3 (alpha)
@@ -567,16 +583,19 @@ Forecast (30 periods ahead):
 ## A.5 Accuracy Calculation in Excel
 
 ### MAPE
+
 ```
 =AVERAGE(ABS((Actual-Forecast)/Actual))*100
 ```
 
 ### RMSE
+
 ```
 =SQRT(AVERAGE((Actual-Forecast)^2))
 ```
 
 ### MAE
+
 ```
 =AVERAGE(ABS(Actual-Forecast))
 ```
@@ -584,4 +603,3 @@ Forecast (30 periods ahead):
 ---
 
 *End of Report*
-
